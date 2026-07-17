@@ -3,12 +3,21 @@ from transformers import MarianTokenizer, MarianMTModel
 
 app = Flask(__name__)
 
-# Load pretrained English → French model
 model_name = "Helsinki-NLP/opus-mt-en-fr"
-tokenizer = MarianTokenizer.from_pretrained(model_name)
-model = MarianMTModel.from_pretrained(model_name)
+
+# Lazy loading
+tokenizer = None
+model = None
+
+def load_model():
+    global tokenizer, model
+    if tokenizer is None or model is None:
+        tokenizer = MarianTokenizer.from_pretrained(model_name)
+        model = MarianMTModel.from_pretrained(model_name)
 
 def translate_to_french(english_text):
+    load_model()   # Model first request appudu matrame load avutundi
+
     encoded = tokenizer(
         english_text,
         return_tensors="pt",
@@ -33,10 +42,7 @@ def home():
         english_text = request.form["english"]
         translation = translate_to_french(english_text)
 
-    return render_template(
-        "index.html",
-        translation=translation
-    )
+    return render_template("index.html", translation=translation)
 
 
 if __name__ == "__main__":
