@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English to French Translator</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>🌍 English → French Translator</h1>
+
+    <form method="POST">
+
+        <textarea
+            name="english"
+            placeholder="Enter English sentence here..."
+            required></textarea>
+
+        <br>
+
+        <button type="submit">Translate</button>
+
+    </form>
+
+    {% if translation %}
+    <div class="result">
+        <h2>French Translation</h2>
+        <p>{{ translation }}</p>
+    </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
