@@ -14,7 +14,7 @@ client = InferenceClient(
 def translate_to_french(english_text):
     result = client.translation(
         english_text,
-        model="google-t5/t5-small"
+        model="Helsinki-NLP/opus-mt-en-fr"
     )
 
     return result.translation_text
