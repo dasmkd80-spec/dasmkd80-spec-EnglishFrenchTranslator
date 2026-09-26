@@ -1,39 +1,2565 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English to French Translator</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Lingua — English to French Translator</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+
 </head>
+
+
 <body>
 
-<div class="container">
+<div class="app">
 
-    <h1>🌍 English → French Translator</h1>
 
-    <form method="POST">
+    <!-- ================= SIDEBAR ================= -->
 
-        <textarea
-            name="english"
-            placeholder="Enter English sentence here..."
-            required></textarea>
+    <aside class="sidebar" id="sidebar">
 
-        <br>
+        <div class="brand">
 
-        <button type="submit">Translate</button>
+            <div class="brand-icon">
+                L
+            </div>
 
-    </form>
+            <div>
+                <h2>Lingua</h2>
+                <span>Translator</span>
+            </div>
 
-    {% if translation %}
-    <div class="result">
-        <h2>French Translation</h2>
-        <p>{{ translation }}</p>
-    </div>
-    {% endif %}
+        </div>
+
+
+        <nav class="nav">
+
+            <p class="nav-title">
+                MAIN
+            </p>
+
+            <button
+                class="nav-item active"
+                onclick="showPage('dashboard', this)"
+            >
+                <span>⌂</span>
+                Dashboard
+            </button>
+
+
+            <button
+                class="nav-item"
+                onclick="showPage('translator', this)"
+            >
+                <span>⇄</span>
+                Translator
+            </button>
+
+
+            <p class="nav-title">
+                LIBRARY
+            </p>
+
+
+            <button
+                class="nav-item"
+                onclick="showPage('history', this)"
+            >
+                <span>◷</span>
+                History
+            </button>
+
+
+            <button
+                class="nav-item"
+                onclick="showPage('favorites', this)"
+            >
+                <span>☆</span>
+                Favorites
+            </button>
+
+
+            <p class="nav-title">
+                OTHER
+            </p>
+
+
+            <button
+                class="nav-item"
+                onclick="showPage('settings', this)"
+            >
+                <span>⚙</span>
+                Settings
+            </button>
+
+
+            <button
+                class="nav-item"
+                onclick="showPage('help', this)"
+            >
+                <span>?</span>
+                Help & Support
+            </button>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <div class="profile-mini">
+
+                <div class="avatar">
+                    U
+                </div>
+
+                <div>
+                    <strong>User</strong>
+                    <small>Translator</small>
+                </div>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main">
+
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <button
+                class="menu-btn"
+                onclick="toggleSidebar()"
+            >
+                ☰
+            </button>
+
+
+            <div class="search-box">
+
+                <span>⌕</span>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="Search translations..."
+                    oninput="searchTranslations()"
+                >
+
+            </div>
+
+
+            <div class="top-actions">
+
+                <button
+                    class="icon-btn"
+                    onclick="showNotifications()"
+                    title="Notifications"
+                >
+                    ♧
+                </button>
+
+
+                <button
+                    class="profile-btn"
+                    onclick="toggleProfile()"
+                >
+
+                    <div class="avatar">
+                        U
+                    </div>
+
+                    <span class="profile-name">
+                        User
+                    </span>
+
+                    <span>
+                        ⌄
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="profile-menu"
+                    id="profileMenu"
+                >
+
+                    <button onclick="showPage('settings')">
+                        ⚙ Settings
+                    </button>
+
+                    <button onclick="showPage('help')">
+                        ? Help & Support
+                    </button>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <section class="content">
+
+
+            <!-- ================= DASHBOARD ================= -->
+
+            <div
+                class="page active-page"
+                id="dashboard"
+            >
+
+                <div class="page-heading">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            WELCOME BACK
+                        </span>
+
+                        <h1>
+                            Translation Dashboard
+                        </h1>
+
+                        <p>
+                            Translate your English text into French quickly and easily.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="primary-btn"
+                        onclick="openTranslator()"
+                    >
+                        + New Translation
+                    </button>
+
+                </div>
+
+
+
+                <!-- STATS -->
+
+                <div class="stats">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            EN
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Source Language
+                            </span>
+
+                            <strong>
+                                English
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            FR
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Target Language
+                            </span>
+
+                            <strong>
+                                French
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            01
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Character Limit
+                            </span>
+
+                            <strong>
+                                1,000
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- TRANSLATION WORKSPACE -->
+
+                <div class="workspace-card">
+
+                    <div class="workspace-header">
+
+                        <div>
+
+                            <h2>
+                                Translation Workspace
+                            </h2>
+
+                            <p>
+                                Enter your English text below.
+                            </p>
+
+                        </div>
+
+
+                        <div class="language-flow">
+
+                            <span>
+                                English
+                            </span>
+
+                            <b>
+                                →
+                            </b>
+
+                            <span>
+                                French
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <form
+                        method="POST"
+                        id="translationForm"
+                        onsubmit="handleTranslationSubmit(event)"
+                    >
+
+                        <div class="translation-grid">
+
+
+                            <!-- ENGLISH -->
+
+                            <div class="language-panel">
+
+                                <div class="panel-header">
+
+                                    <span>
+                                        English
+                                    </span>
+
+                                    <span class="panel-label">
+                                        SOURCE
+                                    </span>
+
+                                </div>
+
+
+                                <textarea
+                                    name="english"
+                                    id="englishText"
+                                    maxlength="1000"
+                                    placeholder="Type or paste your English text here..."
+                                    oninput="updateCounter()"
+                                ></textarea>
+
+
+                                <div class="panel-footer">
+
+                                    <span id="charCount">
+                                        0 / 1000
+                                    </span>
+
+
+                                    <button
+                                        type="button"
+                                        class="small-btn"
+                                        onclick="clearText()"
+                                    >
+                                        Clear
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- FRENCH -->
+
+                            <div class="language-panel output-panel">
+
+                                <div class="panel-header">
+
+                                    <span>
+                                        French
+                                    </span>
+
+                                    <span class="panel-label">
+                                        TRANSLATION
+                                    </span>
+
+                                </div>
+
+
+                                <div
+                                    class="translated"
+                                    id="translatedText"
+                                >
+
+                                    {% if translation %}
+
+                                        {{ translation }}
+
+                                    {% else %}
+
+                                        <span class="placeholder">
+                                            Your French translation will appear here...
+                                        </span>
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <div class="panel-footer">
+
+                                    <span></span>
+
+
+                                    <button
+                                        type="button"
+                                        class="small-btn"
+                                        onclick="copyResult()"
+                                    >
+                                        Copy
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="workspace-actions">
+
+                            <button
+                                type="button"
+                                class="secondary-btn"
+                                onclick="clearText()"
+                            >
+                                Clear
+                            </button>
+
+
+                            <button
+                                type="submit"
+                                class="primary-btn"
+                            >
+                                Translate →
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+
+
+                <!-- QUICK ACTIONS -->
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Quick Actions
+                        </h2>
+
+                        <p>
+                            Start a translation with one click.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="quick-actions">
+
+
+                    <button
+                        onclick="useExample('Hello, how are you today?')"
+                    >
+
+                        <span>
+                            👋
+                        </span>
+
+                        <strong>
+                            Simple Greeting
+                        </strong>
+
+                        <small>
+                            Hello, how are you today?
+                        </small>
+
+                    </button>
+
+
+
+                    <button
+                        onclick="useExample('Thank you very much for your help.')"
+                    >
+
+                        <span>
+                            💬
+                        </span>
+
+                        <strong>
+                            Common Phrase
+                        </strong>
+
+                        <small>
+                            Thank you very much for your help.
+                        </small>
+
+                    </button>
+
+
+
+                    <button
+                        onclick="useExample('I would like to learn French.')"
+                    >
+
+                        <span>
+                            📚
+                        </span>
+
+                        <strong>
+                            Learning
+                        </strong>
+
+                        <small>
+                            I would like to learn French.
+                        </small>
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- RECENT -->
+
+                <div class="section-header recent-header">
+
+                    <div>
+
+                        <h2>
+                            Recent Translations
+                        </h2>
+
+                        <p>
+                            Your latest translation activity.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="text-btn"
+                        onclick="showPage('history')"
+                    >
+                        View All →
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="recent-list"
+                    id="recentList"
+                >
+
+                    <div class="empty-state">
+
+                        <span>
+                            ◷
+                        </span>
+
+                        <p>
+                            No translations yet.
+                        </p>
+
+                        <small>
+                            Your recent translations will appear here.
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= TRANSLATOR ================= -->
+
+            <div
+                class="page"
+                id="translator"
+            >
+
+                <div class="page-heading">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            TRANSLATOR
+                        </span>
+
+                        <h1>
+                            English → French
+                        </h1>
+
+                        <p>
+                            Translate your text between English and French.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="workspace-card translator-page">
+
+
+                    <div class="language-flow large-flow">
+
+                        <span>
+                            English
+                        </span>
+
+                        <b>
+                            →
+                        </b>
+
+                        <span>
+                            French
+                        </span>
+
+                    </div>
+
+
+
+                    <form
+                        method="POST"
+                        onsubmit="handleTranslatorSubmit(event)"
+                    >
+
+                        <div class="translation-grid">
+
+
+                            <div class="language-panel">
+
+                                <div class="panel-header">
+
+                                    <span>
+                                        English
+                                    </span>
+
+                                    <span class="panel-label">
+                                        SOURCE
+                                    </span>
+
+                                </div>
+
+
+                                <textarea
+                                    name="english"
+                                    id="translatorInput"
+                                    maxlength="1000"
+                                    placeholder="Enter English text..."
+                                    oninput="updateTranslatorCounter()"
+                                ></textarea>
+
+
+                                <div class="panel-footer">
+
+                                    <span id="translatorCounter">
+                                        0 / 1000
+                                    </span>
+
+
+                                    <button
+                                        type="button"
+                                        class="small-btn"
+                                        onclick="clearTranslator()"
+                                    >
+                                        Clear
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="language-panel output-panel">
+
+                                <div class="panel-header">
+
+                                    <span>
+                                        French
+                                    </span>
+
+                                    <span class="panel-label">
+                                        TRANSLATION
+                                    </span>
+
+                                </div>
+
+
+                                <div class="translated">
+
+                                    <span class="placeholder">
+                                        Your translation will appear here...
+                                    </span>
+
+                                </div>
+
+
+                                <div class="panel-footer">
+
+                                    <span></span>
+
+                                    <button
+                                        type="button"
+                                        class="small-btn"
+                                        onclick="copyResult()"
+                                    >
+                                        Copy
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="workspace-actions">
+
+                            <button
+                                type="button"
+                                class="secondary-btn"
+                                onclick="clearTranslator()"
+                            >
+                                Clear
+                            </button>
+
+
+                            <button
+                                type="submit"
+                                class="primary-btn"
+                            >
+                                Translate →
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= HISTORY ================= -->
+
+            <div
+                class="page"
+                id="history"
+            >
+
+                <div class="page-heading">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            LIBRARY
+                        </span>
+
+                        <h1>
+                            Translation History
+                        </h1>
+
+                        <p>
+                            View your previous translations.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        class="secondary-btn"
+                        onclick="clearHistory()"
+                    >
+                        Clear History
+                    </button>
+
+                </div>
+
+
+                <div
+                    class="history-list"
+                    id="historyList"
+                >
+
+                    <div class="empty-state">
+
+                        <span>
+                            ◷
+                        </span>
+
+                        <p>
+                            No translation history.
+                        </p>
+
+                        <small>
+                            Your completed translations will appear here.
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= FAVORITES ================= -->
+
+            <div
+                class="page"
+                id="favorites"
+            >
+
+                <div class="page-heading">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            LIBRARY
+                        </span>
+
+                        <h1>
+                            Favorites
+                        </h1>
+
+                        <p>
+                            Save translations you want to access quickly.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="history-list"
+                    id="favoritesList"
+                >
+
+                    <div class="empty-state">
+
+                        <span>
+                            ☆
+                        </span>
+
+                        <p>
+                            No favorites yet.
+                        </p>
+
+                        <small>
+                            Favorite translations will appear here.
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= SETTINGS ================= -->
+
+            <div
+                class="page"
+                id="settings"
+            >
+
+                <div class="page-heading">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            PREFERENCES
+                        </span>
+
+                        <h1>
+                            Settings
+                        </h1>
+
+                        <p>
+                            Manage your translation preferences.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="settings-card">
+
+
+                    <div class="setting-row">
+
+                        <div>
+
+                            <strong>
+                                Source Language
+                            </strong>
+
+                            <p>
+                                The language you translate from.
+                            </p>
+
+                        </div>
+
+
+                        <select>
+
+                            <option selected>
+                                English
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="setting-row">
+
+                        <div>
+
+                            <strong>
+                                Target Language
+                            </strong>
+
+                            <p>
+                                The language used for your translations.
+                            </p>
+
+                        </div>
+
+
+                        <select>
+
+                            <option selected>
+                                French
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+
+                    <div class="setting-row">
+
+                        <div>
+
+                            <strong>
+                                Save Translation History
+                            </strong>
+
+                            <p>
+                                Keep your translations in this browser.
+                            </p>
+
+                        </div>
+
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="historyToggle"
+                                checked
+                            >
+
+                            <span></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ================= HELP ================= -->
+
+            <div
+                class="page"
+                id="help"
+            >
+
+                <div class="page-heading">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            SUPPORT
+                        </span>
+
+                        <h1>
+                            Help & Support
+                        </h1>
+
+                        <p>
+                            Everything you need to use the translator.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="help-grid">
+
+
+                    <div class="help-card">
+
+                        <span>
+                            01
+                        </span>
+
+                        <h3>
+                            Enter your text
+                        </h3>
+
+                        <p>
+                            Enter or paste your English sentence into the source panel.
+                        </p>
+
+                    </div>
+
+
+
+                    <div class="help-card">
+
+                        <span>
+                            02
+                        </span>
+
+                        <h3>
+                            Translate
+                        </h3>
+
+                        <p>
+                            Click the Translate button to generate the French translation.
+                        </p>
+
+                    </div>
+
+
+
+                    <div class="help-card">
+
+                        <span>
+                            03
+                        </span>
+
+                        <h3>
+                            Copy
+                        </h3>
+
+                        <p>
+                            Use the Copy button to copy the translated text.
+                        </p>
+
+                    </div>
+
+
+
+                    <div class="help-card">
+
+                        <span>
+                            04
+                        </span>
+
+                        <h3>
+                            History
+                        </h3>
+
+                        <p>
+                            Your previous translations can be viewed from the History section.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- FOOTER -->
+
+        <footer>
+
+            <span>
+                © 2026 Lingua
+            </span>
+
+            <span>
+                English → French Translator
+            </span>
+
+        </footer>
+
+    </main>
 
 </div>
 
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+
+/* =========================================
+   LOCAL STORAGE
+========================================= */
+
+let historyData =
+    JSON.parse(
+        localStorage.getItem("translationHistory") || "[]"
+    );
+
+
+
+/* =========================================
+   PAGE NAVIGATION
+========================================= */
+
+function showPage(pageId, clickedButton = null) {
+
+    document
+        .querySelectorAll(".page")
+        .forEach(page => {
+            page.classList.remove("active-page");
+        });
+
+
+    const page =
+        document.getElementById(pageId);
+
+
+    if (page) {
+        page.classList.add("active-page");
+    }
+
+
+    document
+        .querySelectorAll(".nav-item")
+        .forEach(item => {
+            item.classList.remove("active");
+        });
+
+
+    if (clickedButton) {
+
+        clickedButton.classList.add("active");
+
+    }
+
+
+    closeProfile();
+
+
+    if (pageId === "history") {
+        renderHistory();
+    }
+
+
+    if (pageId === "favorites") {
+        renderFavorites();
+    }
+
+
+    if (pageId === "dashboard") {
+        renderRecent();
+    }
+
+}
+
+
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+function toggleSidebar() {
+
+    document
+        .getElementById("sidebar")
+        .classList.toggle("open");
+
+}
+
+
+
+/* =========================================
+   PROFILE
+========================================= */
+
+function toggleProfile() {
+
+    document
+        .getElementById("profileMenu")
+        .classList.toggle("show");
+
+}
+
+
+function closeProfile() {
+
+    const menu =
+        document.getElementById("profileMenu");
+
+    if (menu) {
+        menu.classList.remove("show");
+    }
+
+}
+
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        const button =
+            document.querySelector(".profile-btn");
+
+        const menu =
+            document.getElementById("profileMenu");
+
+
+        if (
+            menu &&
+            button &&
+            !menu.contains(event.target) &&
+            !button.contains(event.target)
+        ) {
+
+            menu.classList.remove("show");
+
+        }
+
+    }
+);
+
+
+
+/* =========================================
+   DASHBOARD
+========================================= */
+
+function openTranslator() {
+
+    showPage("translator");
+
+}
+
+
+function useExample(text) {
+
+    const input =
+        document.getElementById("englishText");
+
+
+    if (!input) return;
+
+
+    input.value = text;
+
+    updateCounter();
+
+    input.focus();
+
+}
+
+
+function clearText() {
+
+    const input =
+        document.getElementById("englishText");
+
+
+    if (input) {
+
+        input.value = "";
+
+        updateCounter();
+
+    }
+
+
+    const output =
+        document.getElementById("translatedText");
+
+
+    if (output) {
+
+        output.innerHTML =
+            `<span class="placeholder">
+                Your French translation will appear here...
+            </span>`;
+
+    }
+
+}
+
+
+function updateCounter() {
+
+    const input =
+        document.getElementById("englishText");
+
+    const counter =
+        document.getElementById("charCount");
+
+
+    if (input && counter) {
+
+        counter.textContent =
+            `${input.value.length} / 1000`;
+
+    }
+
+}
+
+
+
+/* =========================================
+   DASHBOARD TRANSLATION
+========================================= */
+
+function handleTranslationSubmit(event) {
+
+    event.preventDefault();
+
+
+    const form = event.target;
+
+    const input =
+        document.getElementById("englishText");
+
+
+    if (
+        !input ||
+        !input.value.trim()
+    ) {
+
+        alert(
+            "Please enter some English text."
+        );
+
+        return;
+
+    }
+
+
+    const english =
+        input.value.trim();
+
+
+    const formData =
+        new FormData(form);
+
+
+    const button =
+        form.querySelector(
+            'button[type="submit"]'
+        );
+
+
+    if (button) {
+
+        button.disabled = true;
+
+        button.textContent =
+            "Translating...";
+
+    }
+
+
+    fetch("/", {
+
+        method: "POST",
+
+        body: formData
+
+    })
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Translation request failed."
+            );
+
+        }
+
+        return response.text();
+
+    })
+
+    .then(html => {
+
+        const parser =
+            new DOMParser();
+
+
+        const doc =
+            parser.parseFromString(
+                html,
+                "text/html"
+            );
+
+
+        const result =
+            doc.querySelector(
+                "#translatedText"
+            );
+
+
+        if (!result) {
+
+            throw new Error(
+                "Translation result not found."
+            );
+
+        }
+
+
+        const french =
+            result.innerText.trim();
+
+
+        if (
+            !french ||
+            french.includes(
+                "Translation service is temporarily unavailable."
+            )
+        ) {
+
+            throw new Error(
+                french ||
+                "Translation failed."
+            );
+
+        }
+
+
+        const currentOutput =
+            document.getElementById(
+                "translatedText"
+            );
+
+
+        if (currentOutput) {
+
+            currentOutput.textContent =
+                french;
+
+        }
+
+
+        saveTranslation(
+            english,
+            french
+        );
+
+    })
+
+    .catch(error => {
+
+        console.error(
+            "Translation error:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Something went wrong while translating."
+        );
+
+    })
+
+    .finally(() => {
+
+        if (button) {
+
+            button.disabled = false;
+
+            button.textContent =
+                "Translate →";
+
+        }
+
+    });
+
+}
+
+
+
+/* =========================================
+   TRANSLATOR PAGE
+========================================= */
+
+function clearTranslator() {
+
+    const input =
+        document.getElementById(
+            "translatorInput"
+        );
+
+
+    if (input) {
+
+        input.value = "";
+
+        updateTranslatorCounter();
+
+    }
+
+}
+
+
+function updateTranslatorCounter() {
+
+    const input =
+        document.getElementById(
+            "translatorInput"
+        );
+
+    const counter =
+        document.getElementById(
+            "translatorCounter"
+        );
+
+
+    if (input && counter) {
+
+        counter.textContent =
+            `${input.value.length} / 1000`;
+
+    }
+
+}
+
+
+function handleTranslatorSubmit(event) {
+
+    event.preventDefault();
+
+
+    const form =
+        event.target;
+
+
+    const input =
+        document.getElementById(
+            "translatorInput"
+        );
+
+
+    if (
+        !input ||
+        !input.value.trim()
+    ) {
+
+        alert(
+            "Please enter some English text."
+        );
+
+        return;
+
+    }
+
+
+    const english =
+        input.value.trim();
+
+
+    const formData =
+        new FormData(form);
+
+
+    const button =
+        form.querySelector(
+            'button[type="submit"]'
+        );
+
+
+    if (button) {
+
+        button.disabled = true;
+
+        button.textContent =
+            "Translating...";
+
+    }
+
+
+    fetch("/", {
+
+        method: "POST",
+
+        body: formData
+
+    })
+
+    .then(response => {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Translation request failed."
+            );
+
+        }
+
+        return response.text();
+
+    })
+
+    .then(html => {
+
+        const parser =
+            new DOMParser();
+
+
+        const doc =
+            parser.parseFromString(
+                html,
+                "text/html"
+            );
+
+
+        const result =
+            doc.querySelector(
+                "#translatedText"
+            );
+
+
+        if (!result) {
+
+            throw new Error(
+                "Translation result not found."
+            );
+
+        }
+
+
+        const french =
+            result.innerText.trim();
+
+
+        if (
+            !french ||
+            french.includes(
+                "Translation service is temporarily unavailable."
+            )
+        ) {
+
+            throw new Error(
+                french ||
+                "Translation failed."
+            );
+
+        }
+
+
+        saveTranslation(
+            english,
+            french
+        );
+
+
+        showPage("dashboard");
+
+
+        const dashboardInput =
+            document.getElementById(
+                "englishText"
+            );
+
+
+        if (dashboardInput) {
+
+            dashboardInput.value =
+                english;
+
+            updateCounter();
+
+        }
+
+
+        const dashboardOutput =
+            document.getElementById(
+                "translatedText"
+            );
+
+
+        if (dashboardOutput) {
+
+            dashboardOutput.textContent =
+                french;
+
+        }
+
+    })
+
+    .catch(error => {
+
+        console.error(
+            "Translation error:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Something went wrong while translating."
+        );
+
+    })
+
+    .finally(() => {
+
+        if (button) {
+
+            button.disabled = false;
+
+            button.textContent =
+                "Translate →";
+
+        }
+
+    });
+
+}
+
+
+
+/* =========================================
+   COPY
+========================================= */
+
+function copyResult() {
+
+    const outputs =
+        document.querySelectorAll(
+            ".translated"
+        );
+
+
+    let text = "";
+
+
+    outputs.forEach(output => {
+
+        if (
+            output.offsetParent !== null &&
+            !output.querySelector(".placeholder")
+        ) {
+
+            text =
+                output.innerText.trim();
+
+        }
+
+    });
+
+
+    if (!text) {
+
+        alert(
+            "There is no translation to copy."
+        );
+
+        return;
+
+    }
+
+
+    navigator.clipboard
+        .writeText(text)
+        .then(() => {
+
+            alert(
+                "Translation copied!"
+            );
+
+        })
+
+        .catch(() => {
+
+            alert(
+                "Unable to copy the translation."
+            );
+
+        });
+
+}
+
+
+
+/* =========================================
+   SAVE TRANSLATION
+========================================= */
+
+function saveTranslation(
+    english,
+    french
+) {
+
+    if (
+        !english ||
+        !french
+    ) {
+
+        return;
+
+    }
+
+
+    const toggle =
+        document.getElementById(
+            "historyToggle"
+        );
+
+
+    if (
+        toggle &&
+        !toggle.checked
+    ) {
+
+        return;
+
+    }
+
+
+    const item = {
+
+        id: Date.now(),
+
+        english: english,
+
+        french: french,
+
+        favorite: false,
+
+        date:
+            new Date()
+                .toLocaleString()
+
+    };
+
+
+    historyData.unshift(item);
+
+
+    historyData =
+        historyData.slice(0, 50);
+
+
+    localStorage.setItem(
+        "translationHistory",
+        JSON.stringify(historyData)
+    );
+
+
+    renderRecent();
+
+    renderHistory();
+
+    renderFavorites();
+
+}
+
+
+
+/* =========================================
+   RECENT TRANSLATIONS
+========================================= */
+
+function renderRecent() {
+
+    const container =
+        document.getElementById(
+            "recentList"
+        );
+
+
+    if (!container) return;
+
+
+    const recent =
+        historyData.slice(0, 5);
+
+
+    if (recent.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <span>◷</span>
+
+                <p>
+                    No translations yet.
+                </p>
+
+                <small>
+                    Your recent translations will appear here.
+                </small>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        recent.map(item => `
+
+            <div class="recent-item">
+
+                <div>
+
+                    <span>
+                        EN
+                    </span>
+
+                    <p>
+                        ${escapeHtml(item.english)}
+                    </p>
+
+                </div>
+
+
+                <b>
+                    →
+                </b>
+
+
+                <div>
+
+                    <span>
+                        FR
+                    </span>
+
+                    <p>
+                        ${escapeHtml(item.french)}
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="${item.favorite ? "favorite active" : "favorite"}"
+                    onclick="toggleFavorite(${item.id})"
+                >
+                    ${item.favorite ? "★" : "☆"}
+                </button>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+
+/* =========================================
+   HISTORY
+========================================= */
+
+function renderHistory(
+    data = historyData
+) {
+
+    const container =
+        document.getElementById(
+            "historyList"
+        );
+
+
+    if (!container) return;
+
+
+    if (data.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <span>◷</span>
+
+                <p>
+                    No translation history.
+                </p>
+
+                <small>
+                    Your completed translations will appear here.
+                </small>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        data.map(item => `
+
+            <div class="history-card">
+
+                <div class="history-content">
+
+
+                    <div class="history-source">
+
+                        <span>
+                            English
+                        </span>
+
+                        <p>
+                            ${escapeHtml(item.english)}
+                        </p>
+
+                    </div>
+
+
+                    <div class="history-arrow">
+                        →
+                    </div>
+
+
+                    <div class="history-target">
+
+                        <span>
+                            French
+                        </span>
+
+                        <p>
+                            ${escapeHtml(item.french)}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="history-actions">
+
+                    <small>
+                        ${item.date}
+                    </small>
+
+
+                    <button
+                        class="${item.favorite ? "favorite active" : "favorite"}"
+                        onclick="toggleFavorite(${item.id})"
+                    >
+                        ${item.favorite ? "★" : "☆"}
+                    </button>
+
+
+                    <button
+                        class="history-copy"
+                        onclick="copyText(${JSON.stringify(item.french)})"
+                    >
+                        Copy
+                    </button>
+
+                </div>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+
+/* =========================================
+   FAVORITES
+========================================= */
+
+function toggleFavorite(id) {
+
+    const item =
+        historyData.find(
+            item => item.id === id
+        );
+
+
+    if (!item) return;
+
+
+    item.favorite =
+        !item.favorite;
+
+
+    localStorage.setItem(
+        "translationHistory",
+        JSON.stringify(historyData)
+    );
+
+
+    renderRecent();
+
+    renderHistory();
+
+    renderFavorites();
+
+}
+
+
+function renderFavorites() {
+
+    const container =
+        document.getElementById(
+            "favoritesList"
+        );
+
+
+    if (!container) return;
+
+
+    const favorites =
+        historyData.filter(
+            item => item.favorite
+        );
+
+
+    if (favorites.length === 0) {
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <span>
+                    ☆
+                </span>
+
+                <p>
+                    No favorites yet.
+                </p>
+
+                <small>
+                    Favorite translations will appear here.
+                </small>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        favorites.map(item => `
+
+            <div class="history-card">
+
+                <div class="history-content">
+
+                    <div class="history-source">
+
+                        <span>
+                            English
+                        </span>
+
+                        <p>
+                            ${escapeHtml(item.english)}
+                        </p>
+
+                    </div>
+
+
+                    <div class="history-arrow">
+                        →
+                    </div>
+
+
+                    <div class="history-target">
+
+                        <span>
+                            French
+                        </span>
+
+                        <p>
+                            ${escapeHtml(item.french)}
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="history-actions">
+
+                    <small>
+                        ${item.date}
+                    </small>
+
+
+                    <button
+                        class="favorite active"
+                        onclick="toggleFavorite(${item.id})"
+                    >
+                        ★
+                    </button>
+
+
+                    <button
+                        class="history-copy"
+                        onclick="copyText(${JSON.stringify(item.french)})"
+                    >
+                        Copy
+                    </button>
+
+                </div>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+
+/* =========================================
+   CLEAR HISTORY
+========================================= */
+
+function clearHistory() {
+
+    if (!historyData.length) {
+
+        return;
+
+    }
+
+
+    if (
+        confirm(
+            "Clear all translation history?"
+        )
+    ) {
+
+        historyData = [];
+
+
+        localStorage.setItem(
+            "translationHistory",
+            JSON.stringify(historyData)
+        );
+
+
+        renderRecent();
+
+        renderHistory();
+
+        renderFavorites();
+
+    }
+
+}
+
+
+
+/* =========================================
+   SEARCH
+========================================= */
+
+function searchTranslations() {
+
+    const input =
+        document.getElementById(
+            "searchInput"
+        );
+
+
+    const query =
+        input.value
+            .toLowerCase()
+            .trim();
+
+
+    if (!query) {
+
+        renderRecent();
+
+        return;
+
+    }
+
+
+    const results =
+        historyData.filter(item =>
+
+            item.english
+                .toLowerCase()
+                .includes(query)
+
+            ||
+
+            item.french
+                .toLowerCase()
+                .includes(query)
+
+        );
+
+
+    const container =
+        document.getElementById(
+            "recentList"
+        );
+
+
+    if (!container) return;
+
+
+    if (!results.length) {
+
+        container.innerHTML = `
+
+            <div class="empty-state">
+
+                <span>
+                    ⌕
+                </span>
+
+                <p>
+                    No results found.
+                </p>
+
+                <small>
+                    Try another search term.
+                </small>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        results.map(item => `
+
+            <div class="recent-item">
+
+                <div>
+
+                    <span>
+                        EN
+                    </span>
+
+                    <p>
+                        ${escapeHtml(item.english)}
+                    </p>
+
+                </div>
+
+
+                <b>
+                    →
+                </b>
+
+
+                <div>
+
+                    <span>
+                        FR
+                    </span>
+
+                    <p>
+                        ${escapeHtml(item.french)}
+                    </p>
+
+                </div>
+
+            </div>
+
+        `).join("");
+
+}
+
+
+
+/* =========================================
+   COPY TEXT
+========================================= */
+
+function copyText(text) {
+
+    navigator.clipboard
+        .writeText(text)
+        .then(() => {
+
+            alert(
+                "Translation copied!"
+            );
+
+        });
+
+}
+
+
+
+/* =========================================
+   NOTIFICATIONS
+========================================= */
+
+function showNotifications() {
+
+    alert(
+        "No new notifications."
+    );
+
+}
+
+
+
+/* =========================================
+   SECURITY / HTML ESCAPING
+========================================= */
+
+function escapeHtml(text) {
+
+    const div =
+        document.createElement("div");
+
+
+    div.textContent =
+        text;
+
+
+    return div.innerHTML;
+
+}
+
+
+
+/* =========================================
+   INITIALIZE
+========================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        updateCounter();
+
+        updateTranslatorCounter();
+
+        renderRecent();
+
+        renderHistory();
+
+        renderFavorites();
+
+    }
+);
+
+</script>
+
 </body>
+
 </html>
